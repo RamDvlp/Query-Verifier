@@ -20,7 +20,7 @@ public class Prog {
 			System.out.println(resultData[3] + " " + resultData[4] + " " + resultData[5]);
 			
 		} catch (SQLException ex) {
-			System.out.println(ex.getMessage());
+			System.out.println(ex.getMessage());     
 		}
 	}
 }
