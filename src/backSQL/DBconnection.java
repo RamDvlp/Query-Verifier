@@ -74,7 +74,7 @@ public class DBconnection {
 				                    
 				}
 			
-			rs.close();     
+			rs.close();           
 			
 		} catch (SQLException ex) {
 			System.out.println(ex.getMessage());
