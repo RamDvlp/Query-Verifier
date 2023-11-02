@@ -15,9 +15,10 @@ public class Prog {
 			System.out.println("\t" + result + "\n");
 			
 			//for future use, split the string to parts
-			String[] resultData = result.split("\t");
-			System.out.println(resultData[0] + " " + resultData[1] + " " + resultData[2]);
-			System.out.println(resultData[3] + " " + resultData[4] + " " + resultData[5]);
+			//String[] resultData = result.split("\t");
+			//System.out.println(resultData[0] + " " + resultData[1] + " " + resultData[2]);
+			//System.out.println(resultData[3] + " " + resultData[4] + " " + resultData[5]);
+			
 			
 		} catch (SQLException ex) {
 			System.out.println(ex.getMessage());           
