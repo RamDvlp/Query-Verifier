@@ -8,6 +8,7 @@
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
@@ -38,14 +39,14 @@
             <HBox alignment="CENTER_LEFT" layoutX="31.0" layoutY="121.0" spacing="20.0">
                <children>
                   <Button mnemonicParsing="false" text="Select Folder" />
-                  <TextField text="Path:\" />
+                  <TextField editable="false" text="Path:\" />
                   <Button mnemonicParsing="false" text="Run All in Folder" />
                </children>
             </HBox>
             <HBox alignment="CENTER_LEFT" layoutX="31.0" layoutY="179.0" prefHeight="31.0" prefWidth="470.0" spacing="20.0">
                <children>
                   <Button mnemonicParsing="false" text="Select File" />
-                  <TextField prefHeight="31.0" prefWidth="209.0" text="Path:\" />
+                  <TextField editable="false" prefHeight="31.0" prefWidth="209.0" text="Path:\" />
                   <Button mnemonicParsing="false" prefHeight="31.0" prefWidth="126.0" text="Run All in File" />
                </children>
             </HBox>
@@ -58,9 +59,13 @@
                   </Label>
                   <VBox spacing="10.0">
                      <children>
-                        <RadioButton fx:id="columnWise" mnemonicParsing="false" text="Column-Wise" />
-                        <RadioButton fx:id="rowWise" mnemonicParsing="false" text="Row-Wise" />
-                        <RadioButton fx:id="cellwise" mnemonicParsing="false" text="Cell-Wise" />
+                        <RadioButton fx:id="columnWise" mnemonicParsing="false" onAction="#setCheckMode" text="Column-Wise">
+                           <toggleGroup>
+                              <ToggleGroup fx:id="toggle" />
+                           </toggleGroup>
+                        </RadioButton>
+                        <RadioButton fx:id="rowWise" mnemonicParsing="false" onAction="#setCheckMode" text="Row-Wise" toggleGroup="$toggle" />
+                        <RadioButton fx:id="cellWise" mnemonicParsing="false" onAction="#setCheckMode" text="Cell-Wise" toggleGroup="$toggle" />
                      </children>
                   </VBox>
                   <Label layoutX="34.0" layoutY="47.0" prefHeight="42.0" prefWidth="234.0" text="Select Correct Result File" underline="true" wrapText="true">
@@ -73,9 +78,9 @@
                   </Label>
                   <HBox alignment="CENTER_LEFT" prefHeight="31.0" prefWidth="470.0" spacing="20.0">
                      <children>
-                        <Button fx:id="browseCorrectBTN" mnemonicParsing="false" prefHeight="31.0" prefWidth="81.0" text="Browse" />
-                        <TextField fx:id="correctPathTXT" prefHeight="31.0" prefWidth="91.0" text="Path:\" />
-                        <Button fx:id="correctUploadBTN" mnemonicParsing="false" prefHeight="31.0" prefWidth="74.0" text="Upload" />
+                        <Button id="browseCorrectFile" fx:id="browseCorrectBTN" mnemonicParsing="false" onAction="#browseForCorrectFile" prefHeight="31.0" prefWidth="81.0" text="Browse" />
+                        <TextField fx:id="correctPathTXT" editable="false" prefHeight="31.0" prefWidth="91.0" text="Path:\" />
+                        <Button fx:id="correctUploadBTN" mnemonicParsing="false" onAction="#uploadeCorrectFile" prefHeight="31.0" prefWidth="74.0" text="Upload" />
                      </children>
                   </HBox>
                </children>
@@ -83,7 +88,7 @@
                   <Insets top="20.0" />
                </padding>
             </VBox>
-            <Label id="uploadMessege" layoutX="997.0" layoutY="454.0" text="123 Queries uploaded successfully." textFill="#1b9455" visible="false">
+            <Label id="uploadMessege" fx:id="correctConfLABEL" layoutX="997.0" layoutY="454.0" text="123 Queries uploaded successfully." textFill="#1b9455" underline="true" visible="false">
                <font>
                   <Font size="16.0" />
                </font>
