@@ -73,5 +73,6 @@ public class HomeController {
 		int correct = model.uploadQueries();
 		correctConfLABEL.setText(correct + " Queries uploaded");
 		correctConfLABEL.setVisible(true);
-	}
+	}	
+	
 }
