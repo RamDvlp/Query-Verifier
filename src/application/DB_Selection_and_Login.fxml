@@ -32,7 +32,7 @@
          </font>
       </Text>
       <Button id="logInBTn" fx:id="logInBTN" layoutX="219.0" layoutY="326.0" mnemonicParsing="false" text="Log In" textFill="#0db54d" />
-      <Button id="cancelBTN" fx:id="cancelBTN" layoutX="327.0" layoutY="326.0" mnemonicParsing="false" text="Cancel" textFill="#dd1111" />
+      <Button id="cancelBTN" fx:id="cancelBTN" layoutX="327.0" layoutY="326.0" mnemonicParsing="false" onAction="#cancelLogIn" text="Cancel" textFill="#dd1111" />
       <TextField fx:id="URL_TXTF" layoutX="193.0" layoutY="111.0" prefHeight="31.0" prefWidth="239.0" />
       <TextField fx:id="UserTXTF" layoutX="193.0" layoutY="171.0" prefHeight="31.0" prefWidth="239.0" />
    </children>

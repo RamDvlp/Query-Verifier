@@ -3,7 +3,7 @@
 package application;
 
 import java.io.File;
-import java.security.acl.Owner;
+
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -12,11 +12,11 @@ import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 import javafx.stage.FileChooser;
-import model.HomeModel;
+import model.Model;
 
 public class HomeController {
 	
-	private HomeModel model;
+	private Model model;
 	@FXML
 	private Label midLabel;
 	@FXML
@@ -40,9 +40,20 @@ public class HomeController {
 	
 	
 	public HomeController() {
-		model = new HomeModel();
+		
 	}
 	
+	
+	
+	public Model getModel() {
+		return model;
+	}
+
+
+	public void setModel(Model model) {
+		this.model = model;
+	}
+
 	public void browseForCorrectFile() {
 		FileChooser fileChooser = new FileChooser();
 
@@ -51,12 +62,12 @@ public class HomeController {
 
         fileChooser.setInitialDirectory(new File("./"));
         // Show the file chooser dialog and get the selected file
-        model.setSelectedCorrectFile( fileChooser.showOpenDialog(null));
+        model.getHomeModel().setSelectedCorrectFile( fileChooser.showOpenDialog(null));
 
-        if (model.getSelectedCorrectFile() != null) {
-            System.out.println("Selected File: " + model.getSelectedCorrectFile().getAbsolutePath());
+        if (model.getHomeModel().getSelectedCorrectFile() != null) {
+            System.out.println("Selected File: " + model.getHomeModel().getSelectedCorrectFile().getAbsolutePath());
             // You can perform further actions with the selected file
-            correctPathTXT.setText(model.getSelectedCorrectFile().getAbsolutePath());
+            correctPathTXT.setText(model.getHomeModel().getSelectedCorrectFile().getAbsolutePath());
         } else {
             System.out.println("File selection cancelled.");
         }
@@ -64,13 +75,13 @@ public class HomeController {
 	
 	public void setCheckMode() {
 		
-		model.setSelectedModel( toggle.getSelectedToggle().toString());
+		model.getHomeModel().setSelectedModel( toggle.getSelectedToggle().toString());
 
 	}
 	
 	public void uploadeCorrectFile() {
 		System.out.println("pressed upload");
-		int correct = model.uploadQueries();
+		int correct = model.getHomeModel().uploadQueries();
 		correctConfLABEL.setText(correct + " Queries uploaded");
 		correctConfLABEL.setVisible(true);
 	}	
