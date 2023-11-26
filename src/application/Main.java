@@ -39,6 +39,11 @@ public class Main extends Application {
 			Stage loginStage = new Stage();
 			Scene loginScene = new Scene(loginPane, 600, 500);
 			loginStage.initModality(Modality.APPLICATION_MODAL);
+			
+			loginStage.setOnCloseRequest(event -> {
+	            event.consume(); // Consume the event to prevent the stage from closing
+	        });
+			
 			loginStage.setTitle("Connect to DB");
 			loginStage.setScene(loginScene);
 			

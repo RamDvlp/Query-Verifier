@@ -27,6 +27,5 @@ public class Model {
 		this.homeModel = homeModel;
 	}
 	
-	
 
 }
