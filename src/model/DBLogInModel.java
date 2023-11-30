@@ -4,17 +4,14 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.sql.DriverManager;
 import java.util.Properties;
-
-import backSQL.DBconnection;
 
 public class DBLogInModel {
 
 	private String url;
 	private String user;
 	private String password;
-	
+	private final String propfileName = "db.properties";
 	/**
 	 * Make sure the properties file exists, and write user given values to it (even though they might be incorrect). 
 	 * v.01, 26.11.2023 - the password is being saved as well
@@ -27,7 +24,7 @@ public class DBLogInModel {
 		setUser(user);
 		setPassword(password);
 		
-		String propfileName = "db.properties";
+		
 		File f = new File(propfileName);
 		if(!f.exists()) {
 			try {
@@ -66,6 +63,27 @@ public class DBLogInModel {
 
 	private void setURL(String url2) {
 		this.url = url2;
+	}
+
+	public String[] getInitValuesIfAny() {
+		
+		String [] initVals = new String[3];
+		
+		try (FileInputStream io = new FileInputStream(propfileName)) {
+			
+			Properties pros = new Properties();
+			pros.load(io);
+			
+			initVals[0] = pros.getProperty("URL");
+			initVals[1] = pros.getProperty("User");
+			initVals[2] = pros.getProperty("Password");
+			
+			return initVals;
+		} catch (IOException e) {
+			System.out.println(e.getMessage());
+			return null;
+		}
+		
 	}
 
 	

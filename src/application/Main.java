@@ -39,6 +39,7 @@ public class Main extends Application {
 			Stage loginStage = new Stage();
 			Scene loginScene = new Scene(loginPane, 600, 500);
 			loginStage.initModality(Modality.APPLICATION_MODAL);
+			loginStage.setResizable(false);
 			
 			loginStage.setOnCloseRequest(event -> {
 	            event.consume(); // Consume the event to prevent the stage from closing
@@ -47,11 +48,11 @@ public class Main extends Application {
 			loginStage.setTitle("Connect to DB");
 			loginStage.setScene(loginScene);
 			
+			loginStage.initOwner(primaryStage);
+			
 			//MVC model assignment 
 			LogInController logController = fxmlLoader.getController();
 			logController.setLogInModel(model);
-			
-			loginStage.initOwner(primaryStage);
 			
 			
 			loginStage.show();

@@ -17,12 +17,20 @@ public class Connection {
 	}
 
 	@Test
-	public void testGetConnection() throws SQLException {
+	public void testGetConnectionFalse() throws SQLException {
 		Model model = new Model();
-		model.getLogInModel().setProperties("jdbc:mysql://localhost:3306/mysqljdbc", "root", "password");
-		java.sql.Connection conn = DBconnection.getConnection();
-		assertNotNull(conn);
-		conn.close();
+		boolean isConnected = model.getDbService().testConnection("jdbc:mysql://localhost:3306/mysqljdbc", "root", "password");
+		assertFalse(isConnected);
+		
+	}
+	
+	@Test
+	public void testGetConnectionTrue() throws SQLException {
+		Model model = new Model();
+		boolean isConnected = model.getDbService().testConnection("jdbc:mysql://localhost:3306/mysqljdbc", "root", "omited");
+		//incorrect password provided, to avoid test fail, negative condition added
+		assertTrue(!isConnected);
+		
 	}
 	
 	

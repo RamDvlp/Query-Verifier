@@ -26,6 +26,23 @@ public class DBconnection {
 	public static final String propfileName = "db.properties";
 	
 	private static qType querytype;
+	
+	private Connection conn;
+	
+	private static DBconnection INSTANCE; 
+	
+	private DBconnection() {}
+	
+	/*
+	 * Despite the ability of JDBC to connect to several data bases at once,
+	 * in order to maintain a single purpose for the application, and not mix different SQL languages,
+	 * the model which interfacing with the DB will be singleton - meaning connection to one DB at a time.
+	 */
+	public static DBconnection getInstance() {
+		if (INSTANCE == null)
+			INSTANCE = new DBconnection();
+		return INSTANCE;
+	}
 
 	/**
 	 * Get database connection
@@ -33,8 +50,8 @@ public class DBconnection {
 	 * @return a Connection object
 	 * @throws SQLException
 	 */
-	public static Connection getConnection() throws SQLException {
-		Connection conn = null;
+	public void getConnection() throws SQLException {
+		//Connection conn = null;
 
 		try (FileInputStream io = new FileInputStream(propfileName)) {
 
@@ -52,8 +69,30 @@ public class DBconnection {
 		} catch (IOException e) {
 			System.out.println(e.getMessage());
 		}
+		//return conn;
+	}
+	
+	/**
+	 * Made for testing if the connection to Db possiable with the DB detais provided by user.
+	 * this is done to reduce the amount of file read\write access e.g, properties.
+	 * @param url
+	 * @param user
+	 * @param password
+	 * @return temp connection
+	 */
+	public Connection getConnectionFromUserInput(String url,String user,String password){
+		Connection conn = null;
+
+		// create a connection to the database
+		try {
+			conn = DriverManager.getConnection(url, user, password);
+		} catch (SQLException e) {
+			return null;
+			
+		}
 		return conn;
 	}
+		
 
 	/**
 	 * Running the given query (default otherwise) on the data base
@@ -62,16 +101,16 @@ public class DBconnection {
 	 * @param query
 	 * @return the string representation of the result set data.
 	 */
-	public static String runSelectQuery(Connection conn, String query) {
+	public String runSelectQuery(String query) {
 
 		StringBuffer resultData = new StringBuffer();
 
 		try (Statement stmt = conn.createStatement()) {
 
 			if (query == null || query == "") {
-				query = constructdefaultQuery(conn);
+				query = constructdefaultQuery();
 			} else {
-				dissectQuery(conn, query);
+				dissectQuery(query);
 			}
 			//dissectQuery(conn, query);
 			ResultSet rs = stmt.executeQuery(query);
@@ -104,7 +143,7 @@ public class DBconnection {
 
 	}
 
-	private static void getColumnsNameOfQuery(ResultSet rs) {
+	private void getColumnsNameOfQuery(ResultSet rs) {
 		try {
 			int columnAmount = rs.getMetaData().getColumnCount();
 			columns = new String[columnAmount];
@@ -117,7 +156,7 @@ public class DBconnection {
 		
 	}
 
-	private static void dissectQuery(Connection conn, String query) {
+	private void dissectQuery(String query) {
 
 //		boolean isSelectQuery = false;
 //		ArrayList<String> listOfColumns = new ArrayList<String>();
@@ -141,7 +180,7 @@ public class DBconnection {
 
 	}
 
-	private static String constructdefaultQuery(Connection conn) {
+	private String constructdefaultQuery() {
 		String query = "";
 		try {
 			String catalog = conn.getCatalog(); // The connected DB schema name
@@ -164,7 +203,7 @@ public class DBconnection {
 		return query;
 	}
 
-	public static int runUpdateQuery(Connection conn, String string) {
+	public int runUpdateQuery(String string) {
 		String sqlUpdate = "UPDATE candidates "
                 + "SET last_name = ? "
                 + "WHERE id = ?";
@@ -189,7 +228,7 @@ public class DBconnection {
 		return lineModified;
 	}
 
-	public static int runInsertQuery(Connection conn, String string) {
+	public int runInsertQuery(String string) {
 		String sql = "INSERT INTO candidates(first_name,last_name,dob,phone,email) "
 	            + "VALUES(?,?,?,?,?)";
 		
