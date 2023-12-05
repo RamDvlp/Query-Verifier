@@ -1,5 +1,7 @@
 package application;
 
+import java.io.IOException;
+
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -7,7 +9,6 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import model.HomeModel;
 import model.Model;
 
 public class Main extends Application {
@@ -32,34 +33,45 @@ public class Main extends Application {
 			
 			primaryStage.show();		
 			
-			
-			//Log In to DB screen - the main App window will be disable until login committed.
-			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("DB_Selection_and_Login.fxml"));
-			AnchorPane loginPane = fxmlLoader.load(); 
-			Stage loginStage = new Stage();
-			Scene loginScene = new Scene(loginPane, 600, 500);
-			loginStage.initModality(Modality.APPLICATION_MODAL);
-			loginStage.setResizable(false);
-			
-			loginStage.setOnCloseRequest(event -> {
-	            event.consume(); // Consume the event to prevent the stage from closing
-	        });
-			
-			loginStage.setTitle("Connect to DB");
-			loginStage.setScene(loginScene);
-			
-			loginStage.initOwner(primaryStage);
-			
-			//MVC model assignment 
-			LogInController logController = fxmlLoader.getController();
-			logController.setLogInModel(model);
-			
-			
-			loginStage.show();
+			//Init loginScreen
+			showLogInScrenn(model,primaryStage);
 			
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
+	}
+
+	private void showLogInScrenn(Model model, Stage primaryStage) throws IOException {
+		//Log In to DB screen - the main App window will be disable until login committed.
+		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("DB_Selection_and_Login.fxml"));
+		AnchorPane loginPane = fxmlLoader.load(); 
+		Stage loginStage = new Stage();
+		
+		
+		
+		Scene loginScene = new Scene(loginPane, 600, 500);
+		loginStage.initModality(Modality.APPLICATION_MODAL);
+		loginStage.setResizable(false);
+		
+		loginStage.setOnCloseRequest(event -> {
+            event.consume(); // Consume the event to prevent the stage from closing
+        });
+		
+		loginStage.setTitle("Connect to DB");
+		loginStage.setScene(loginScene);
+		
+		loginStage.initOwner(primaryStage);
+		
+		//MVC model assignment 
+		LogInController logController = fxmlLoader.getController();
+		logController.setLogInModel(model);
+		//logController.setStage(loginStage);
+		
+		
+		
+		loginStage.show();
+		
+		
 	}
 
 	public static void main(String[] args) {

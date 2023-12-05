@@ -24,6 +24,9 @@ public class LogInController {
 	
 	
 	
+	public LogInController() {
+	}
+
 	@FXML
 	private void initialize() {
 		userErrors = new UserErrors();
@@ -35,6 +38,14 @@ public class LogInController {
 
 	public void setLogInModel(Model logInModel) {
 		this.logInModel = logInModel;
+		String initval[] = logInModel.getLogInModel().getInitValuesIfAny();
+		if(initval != null) {
+			URL_TXTF.setText(initval[0]);
+			UserTXTF.setText(initval[1]);
+			password_TXT_fld.setText(initval[2]);
+			
+		}
+		
 	}
 
 	public void cancelLogIn(javafx.event.ActionEvent event) {
@@ -70,9 +81,12 @@ public class LogInController {
 		logInModel.getLogInModel().setProperties(URL_TXTF.getText(),UserTXTF.getText(),password_TXT_fld.getText());
 		logInModel.getDbService().establishConnection();
 		
+		userErrors.succsessfullLogIn("Connection to DataBase has been established.");
+		
 		Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
 		
 		window.close();
 	}
+
 
 }

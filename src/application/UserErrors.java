@@ -27,4 +27,12 @@ public class UserErrors {
 		
 	}
 
+	public void succsessfullLogIn(String messege) {
+		alert.setAlertType(AlertType.INFORMATION);
+		alert.setContentText(messege);
+		
+		alert.show();
+		
+	}
+
 }

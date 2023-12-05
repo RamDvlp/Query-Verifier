@@ -97,8 +97,8 @@
             <Button layoutX="632.0" layoutY="121.0" mnemonicParsing="false" text="Run Previous" />
             <Button layoutX="550.0" layoutY="179.0" mnemonicParsing="false" text="Run Next" />
             <Button layoutX="632.0" layoutY="179.0" mnemonicParsing="false" text="Run Previous" />
-            <Button layoutX="997.0" layoutY="679.0" mnemonicParsing="false" text="Reconnect" />
-            <Button layoutX="1153.0" layoutY="679.0" mnemonicParsing="false" text="Quit" />
+            <Button fx:id="reconnect_BTN" layoutX="997.0" layoutY="679.0" mnemonicParsing="false" onAction="#openLogInScreen" text="Reconnect" />
+            <Button fx:id="quit_BTN" layoutX="1153.0" layoutY="679.0" mnemonicParsing="false" onAction="#quitApp" text="Quit" />
          </children>
       </AnchorPane>
    </center>
