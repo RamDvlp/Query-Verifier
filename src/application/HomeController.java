@@ -45,7 +45,12 @@ public class HomeController {
 	private Button correctUploadBTN;
 	@FXML
 	private Label correctConfLABEL;
-	
+	@FXML
+	private Button selectFileTooCheckBTN;
+	@FXML
+	private TextField fileToCheckPath_TXTF;
+	@FXML
+	private Button runFileButton;
 	
 	public HomeController() {
 	}
@@ -61,7 +66,7 @@ public class HomeController {
 		this.model = model;
 	}
 
-	public void browseForCorrectFile() {
+	public void browseForCorrectFile(Event event) {
 		FileChooser fileChooser = new FileChooser();
 
         // Set the title of the file chooser dialog
@@ -78,6 +83,8 @@ public class HomeController {
         } else {
             System.out.println("File selection cancelled.");
         }
+        
+        uploadeCorrectFile(event);
 	}
 	
 	public void setCheckMode() {
@@ -86,11 +93,14 @@ public class HomeController {
 
 	}
 	
-	public void uploadeCorrectFile() {
-		System.out.println("pressed upload");
-		int correct = model.getHomeModel().uploadQueries();
-		correctConfLABEL.setText(correct + " Queries uploaded");
+	private void uploadeCorrectFile(Event event) {
+		//System.out.println("pressed upload");
+		Button clicked = (Button)((Node)event.getSource());
+		
+		int correct = model.getHomeModel().uploadQueries(clicked.getText());
+		correctConfLABEL.setText(correct + " Queries uploaded"); 
 		correctConfLABEL.setVisible(true);
+		
 	}
 	
 	public void openLogInScreen(ActionEvent event) {
@@ -135,6 +145,28 @@ public class HomeController {
 		Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
 		
 		window.close();
+	}
+	
+	public void readFileToCheck(Event event) {
+		FileChooser fileChooser = new FileChooser();
+
+        // Set the title of the file chooser dialog
+        fileChooser.setTitle("Open Resource File");
+
+        fileChooser.setInitialDirectory(new File("./"));
+        // Show the file chooser dialog and get the selected file
+        model.getHomeModel().setFileToCheck(fileChooser.showOpenDialog(null));
+
+        if (model.getHomeModel().getFileToCheck() != null) {
+            System.out.println("Selected File: " + model.getHomeModel().getFileToCheck().getAbsolutePath());
+            // You can perform further actions with the selected file
+            fileToCheckPath_TXTF.setText(model.getHomeModel().getFileToCheck().getAbsolutePath());
+        } else {
+            System.out.println("File selection cancelled.");
+        }
+        
+        uploadeCorrectFile(event);
+		
 	}
 	
 }

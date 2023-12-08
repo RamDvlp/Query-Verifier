@@ -32,7 +32,7 @@
                   </TableView>
                </content>
             </ScrollPane>
-            <Label id="headline" alignment="CENTER" layoutX="388.0" prefHeight="71.0" prefWidth="388.0" text="Query-Verefier" textAlignment="CENTER" textOverrun="CENTER_ELLIPSIS" underline="true" wrapText="true">
+            <Label id="headline" alignment="CENTER" layoutX="446.0" prefHeight="71.0" prefWidth="388.0" text="Query-Verefier" textAlignment="CENTER" textOverrun="CENTER_ELLIPSIS" underline="true" wrapText="true">
                <font>
                   <Font name="Bell MT Bold" size="49.0" />
                </font></Label>
@@ -45,9 +45,9 @@
             </HBox>
             <HBox alignment="CENTER_LEFT" layoutX="31.0" layoutY="179.0" prefHeight="31.0" prefWidth="470.0" spacing="20.0">
                <children>
-                  <Button mnemonicParsing="false" text="Select File" />
-                  <TextField editable="false" prefHeight="31.0" prefWidth="209.0" text="Path:\" />
-                  <Button mnemonicParsing="false" prefHeight="31.0" prefWidth="126.0" text="Run All in File" />
+                  <Button fx:id="selectFileTooCheckBTN" mnemonicParsing="false" onAction="#readFileToCheck" text="Select File" />
+                  <TextField fx:id="fileToCheckPath_TXTF" editable="false" prefHeight="31.0" prefWidth="209.0" text="Path:\" />
+                  <Button fx:id="runFileButton" mnemonicParsing="false" prefHeight="31.0" prefWidth="126.0" text="Run All in File" />
                </children>
             </HBox>
             <VBox alignment="CENTER" layoutX="977.0" layoutY="121.0" prefHeight="249.0" prefWidth="282.0" spacing="20.0">
@@ -79,8 +79,7 @@
                   <HBox alignment="CENTER_LEFT" prefHeight="31.0" prefWidth="470.0">
                      <children>
                         <Button id="browseCorrectFile" fx:id="browseCorrectBTN" mnemonicParsing="false" onAction="#browseForCorrectFile" prefHeight="31.0" prefWidth="81.0" text="Browse" />
-                        <TextField fx:id="correctPathTXT" editable="false" prefHeight="31.0" prefWidth="135.0" text="Path:\" />
-                        <Button fx:id="correctUploadBTN" mnemonicParsing="false" onAction="#uploadeCorrectFile" prefHeight="31.0" prefWidth="74.0" text="Upload" />
+                        <TextField fx:id="correctPathTXT" editable="false" prefHeight="31.0" prefWidth="202.0" text="Path:\" />
                      </children>
                   </HBox>
                </children>
@@ -88,9 +87,9 @@
                   <Insets top="20.0" />
                </padding>
             </VBox>
-            <Label id="uploadMessege" fx:id="correctConfLABEL" layoutX="997.0" layoutY="454.0" text="123 Queries uploaded successfully." textFill="#1b9455" underline="true" visible="false">
+            <Label id="uploadMessege" fx:id="correctConfLABEL" layoutX="997.0" layoutY="454.0" text="123 Queries uploaded successfully." textAlignment="CENTER" textFill="#1b9455" underline="true" visible="false">
                <font>
-                  <Font size="16.0" />
+                  <Font name="System Bold" size="16.0" />
                </font>
             </Label>
             <Button layoutX="550.0" layoutY="121.0" mnemonicParsing="false" text="Run Next" />
