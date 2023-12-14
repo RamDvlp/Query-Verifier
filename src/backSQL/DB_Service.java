@@ -1,7 +1,11 @@
 package backSQL;
 
 import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Map;
+
+import javafx.scene.control.TableView;
 
 public class DB_Service {
 
@@ -35,6 +39,12 @@ public class DB_Service {
 		}
 		
 		System.out.println("Connected to DB");
+	}
+
+
+	public void runQuery(String query, TableView<Map<String,Object>> table) {
+		 dbConnection.runAquery(query, table);
+		
 	}
 	
 	

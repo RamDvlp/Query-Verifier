@@ -1,6 +1,10 @@
 package model;
 
+import java.sql.ResultSet;
+import java.util.Map;
+
 import backSQL.DB_Service;
+import javafx.scene.control.TableView;
 
 public class Model {
 	
@@ -40,6 +44,11 @@ public class Model {
 	
 	public void setDbService(DB_Service dbService) {
 		this.dbService = dbService;
+	}
+	
+	public void runTestedQueryNext(TableView<Map<String,Object>> table) {
+		String query = this.homeModel.getIter().next();
+		dbService.runQuery(query, table);
 	}
 	
 

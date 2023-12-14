@@ -4,7 +4,15 @@ package application;
 
 import java.io.File;
 import java.io.IOException;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
 
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.fxml.FXML;
@@ -14,6 +22,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.AnchorPane;
@@ -51,8 +61,12 @@ public class HomeController {
 	private TextField fileToCheckPath_TXTF;
 	@FXML
 	private Button runFileButton;
+	@FXML
+	private TableView<Map<String, Object>> table;
+	private UserErrors userError;
 	
 	public HomeController() {
+		userError = new UserErrors();
 	}
 	
 	
@@ -88,8 +102,18 @@ public class HomeController {
 	}
 	
 	public void setCheckMode() {
+		String info = toggle.getSelectedToggle().toString();
 		
-		model.getHomeModel().setSelectedModel( toggle.getSelectedToggle().toString());
+		if(info.contains("Column-Wise")) {
+			info = "Column-Wise";	
+		}
+		 if(info.contains("Row-Wise")) {
+			info = "Row-Wise";
+		} if (info.contains("Cell-Wise"))
+			info = "Cell-Wise";
+		
+		
+		model.getHomeModel().setSelectedModel(info);
 
 	}
 	
@@ -167,6 +191,20 @@ public class HomeController {
         
         uploadeCorrectFile(event);
 		
+	}
+	
+	public void runAllTestedFile() {
+		if(toggle.getSelectedToggle() == null)
+			userError.unselectedCheckMethod("Please Select mean of validation on the right pannel.");
+		else System.out.println(toggle.getSelectedToggle());
+		
+		
+	}
+	
+	public void runNextFromFile() {
+		table.getColumns().clear();
+		//correctConfLABEL.setText(model.runTestedQueryNext());
+		model.runTestedQueryNext(table);
 	}
 	
 }

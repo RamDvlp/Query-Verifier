@@ -30,9 +30,14 @@ public class UserErrors {
 	public void succsessfullLogIn(String messege) {
 		alert.setAlertType(AlertType.INFORMATION);
 		alert.setContentText(messege);
-		
 		alert.show();
 		
+	}
+	
+	public void unselectedCheckMethod(String messege) {
+		alert.setAlertType(AlertType.WARNING);
+		alert.setContentText(messege);
+		alert.show();
 	}
 
 }

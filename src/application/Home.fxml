@@ -5,7 +5,6 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.ScrollPane?>
-<?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.ToggleGroup?>
@@ -21,15 +20,7 @@
          <children>
             <ScrollPane layoutX="14.0" layoutY="243.0">
                <content>
-                  <TableView prefHeight="511.0" prefWidth="937.0">
-                    <columns>
-                      <TableColumn prefWidth="75.0" text="row" />
-                        <TableColumn prefWidth="75.0" text="row" />
-                        <TableColumn prefWidth="75.0" text="row" />
-                        <TableColumn prefWidth="75.0" text="row" />
-                        <TableColumn prefWidth="75.0" text="row" />
-                    </columns>
-                  </TableView>
+                  <TableView fx:id="table" prefHeight="511.0" prefWidth="937.0" />
                </content>
             </ScrollPane>
             <Label id="headline" alignment="CENTER" layoutX="446.0" prefHeight="71.0" prefWidth="388.0" text="Query-Verefier" textAlignment="CENTER" textOverrun="CENTER_ELLIPSIS" underline="true" wrapText="true">
@@ -47,7 +38,7 @@
                <children>
                   <Button fx:id="selectFileTooCheckBTN" mnemonicParsing="false" onAction="#readFileToCheck" text="Select File" />
                   <TextField fx:id="fileToCheckPath_TXTF" editable="false" prefHeight="31.0" prefWidth="209.0" text="Path:\" />
-                  <Button fx:id="runFileButton" mnemonicParsing="false" prefHeight="31.0" prefWidth="126.0" text="Run All in File" />
+                  <Button fx:id="runFileButton" mnemonicParsing="false" onAction="#runAllTestedFile" prefHeight="31.0" prefWidth="126.0" text="Run All in File" />
                </children>
             </HBox>
             <VBox alignment="CENTER" layoutX="977.0" layoutY="121.0" prefHeight="249.0" prefWidth="282.0" spacing="20.0">
@@ -94,7 +85,7 @@
             </Label>
             <Button layoutX="550.0" layoutY="121.0" mnemonicParsing="false" text="Run Next" />
             <Button layoutX="632.0" layoutY="121.0" mnemonicParsing="false" text="Run Previous" />
-            <Button layoutX="550.0" layoutY="179.0" mnemonicParsing="false" text="Run Next" />
+            <Button layoutX="550.0" layoutY="179.0" mnemonicParsing="false" onAction="#runNextFromFile" text="Run Next" />
             <Button layoutX="632.0" layoutY="179.0" mnemonicParsing="false" text="Run Previous" />
             <Button fx:id="reconnect_BTN" layoutX="997.0" layoutY="679.0" mnemonicParsing="false" onAction="#openLogInScreen" text="Reconnect" />
             <Button fx:id="quit_BTN" layoutX="1153.0" layoutY="679.0" mnemonicParsing="false" onAction="#quitApp" text="Quit" />

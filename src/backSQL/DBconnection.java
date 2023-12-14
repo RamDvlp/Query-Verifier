@@ -8,12 +8,21 @@ import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
+
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 
 public class DBconnection {
 
@@ -93,6 +102,24 @@ public class DBconnection {
 		return conn;
 	}
 		
+	
+	public void runAquery(String query, TableView<Map<String,Object>> table) {
+		dissectQuery(query);
+
+		switch (querytype) {
+		case SELECT:
+			 runSelectQueryForGUI(query, table);
+		case INSERT:
+
+			break;
+
+		case UPDATE:
+			break;
+		default:
+			break;
+		}
+		
+	}
 
 	/**
 	 * Running the given query (default otherwise) on the data base
@@ -114,7 +141,7 @@ public class DBconnection {
 			}
 			//dissectQuery(conn, query);
 			ResultSet rs = stmt.executeQuery(query);
-
+			
 			/*
 			 * provides information about the columns of the retrieved set, such as column
 			 * count, name, data type etc. System.out.println(rs.getMetaData());
@@ -143,6 +170,59 @@ public class DBconnection {
 
 	}
 
+	public void runSelectQueryForGUI(String query, TableView<Map<String,Object>> table) {
+
+		//StringBuffer resultData = new StringBuffer();
+
+		try (Statement stmt = conn.createStatement()) {
+
+			if (query == null || query == "") {
+				query = constructdefaultQuery();
+			} else {
+				dissectQuery(query);
+			}
+			//dissectQuery(conn, query);
+			ResultSet rs =  stmt.executeQuery(query);
+			
+			ResultSetMetaData metaData = rs.getMetaData();
+	        int columnCount = metaData.getColumnCount();
+
+	        for (int columnIndex = 1; columnIndex <= columnCount; columnIndex++) {
+	            String columnName = metaData.getColumnName(columnIndex);
+
+	            TableColumn<Map<String, Object>, Object> column = new TableColumn<>(columnName);
+	                column.setCellValueFactory(cellData -> {
+	                    Map<String, Object> rowData = cellData.getValue();
+	                    return new SimpleObjectProperty<>(rowData.get(columnName));
+	                });
+
+	                table.getColumns().add(column);
+	            }
+
+	            // Populate data
+	            ObservableList<Map<String, Object>> data = FXCollections.observableArrayList();
+	            while (rs.next()) {
+	                Map<String, Object> row = new HashMap<>();
+	                for (int columnIndex = 1; columnIndex <= columnCount; columnIndex++) {
+	                    String columnName = metaData.getColumnName(columnIndex);
+	                    Object value = rs.getObject(columnIndex);
+	                    row.put(columnName, value);
+	                }
+	                data.add(row);
+	            }
+
+	        table.setItems(data);
+			
+			
+			
+			rs.close();
+
+		} catch (SQLException ex) {
+			System.out.println(ex.getMessage());
+		}
+
+	}
+
 	private void getColumnsNameOfQuery(ResultSet rs) {
 		try {
 			int columnAmount = rs.getMetaData().getColumnCount();
@@ -164,18 +244,16 @@ public class DBconnection {
 		queryParts = query.split("[ |\t|\n]+");
 		for (String s : queryParts) {
 			System.out.println(s);
-			if (s.equals("SELECT")) {
+			if (s.toUpperCase().equals("SELECT")) {
 				querytype = qType.SELECT;
-				// columns = Arrays.copyOfRange(queryParts, 1,
-				// Arrays.asList(queryParts).indexOf("FROM"));
-
-				// TODO figure out what to do with asterisk * as well as if it is necessary at
-				// all.
-			} else if( s.equals("INSERT")) {
+				
+			} else if( s.toUpperCase().equals("INSERT")) {
 				querytype = qType.INSERT;
+				//return runInsertQuery(query);
 			} else {
 				querytype = qType.UPDATE;
 			}
+			return;
 		}
 
 	}

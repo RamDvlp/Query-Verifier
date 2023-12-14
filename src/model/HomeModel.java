@@ -13,13 +13,26 @@ public class HomeModel {
 	private ArrayList<String> correctQueries;
 	private ArrayList<String> testedQueries;
 	private File fileToCheck;
+	private QueryIterator iter;
 	
 	public HomeModel() {
 		super();
 		correctQueries = new ArrayList<String>();
 		testedQueries = new ArrayList<String>();
+		iter = new QueryIterator(testedQueries);
+		
 	}
 	
+	
+	
+	public QueryIterator getIter() {
+		return iter;
+	}
+
+	public void setIter(QueryIterator iter) {
+		this.iter = iter;
+	}
+
 	public File getFileToCheck() {
 		return fileToCheck;
 	}
@@ -35,6 +48,7 @@ public class HomeModel {
 		this.fileCorrectQuery = selectedCorrectFile;
 	}
 	public String getSelectedModel() {
+		
 		return selectedModel;
 	}
 	public void setSelectedModel(String selectedModel) {
