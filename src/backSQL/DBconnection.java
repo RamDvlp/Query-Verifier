@@ -21,6 +21,7 @@ import java.util.Properties;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.scene.Group;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 
@@ -103,7 +104,7 @@ public class DBconnection {
 	}
 		
 	
-	public void runAquery(String query, TableView<Map<String,Object>> table) {
+	public void runAquery(String query, TableView<Map<String, Object>> table) {
 		dissectQuery(query);
 
 		switch (querytype) {

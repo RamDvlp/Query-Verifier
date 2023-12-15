@@ -1,5 +1,3 @@
-
-
 package application;
 
 import java.io.File;
@@ -17,6 +15,7 @@ import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -63,10 +62,16 @@ public class HomeController {
 	private Button runFileButton;
 	@FXML
 	private TableView<Map<String, Object>> table;
+	@FXML
+	private Button runNextFromFileBTN;
+	@FXML
+	private Button runPreviousFromFileBTN;
 	private UserErrors userError;
+	private Group root;
 	
 	public HomeController() {
 		userError = new UserErrors();
+		//root = new Group(table);
 	}
 	
 	
@@ -202,9 +207,11 @@ public class HomeController {
 	}
 	
 	public void runNextFromFile() {
-		table.getColumns().clear();
-		//correctConfLABEL.setText(model.runTestedQueryNext());
 		model.runTestedQueryNext(table);
+	}
+	
+	public void runPreviousFromFile() {
+		model.runTestedQueryPrevious(table);
 	}
 	
 }

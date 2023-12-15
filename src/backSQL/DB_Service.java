@@ -5,6 +5,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Map;
 
+import javafx.scene.Group;
 import javafx.scene.control.TableView;
 
 public class DB_Service {
@@ -42,7 +43,7 @@ public class DB_Service {
 	}
 
 
-	public void runQuery(String query, TableView<Map<String,Object>> table) {
+	public void runQuery(String query, TableView<Map<String, Object>> table) {
 		 dbConnection.runAquery(query, table);
 		
 	}

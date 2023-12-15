@@ -3,7 +3,10 @@ package model;
 import java.sql.ResultSet;
 import java.util.Map;
 
+import com.sun.org.apache.xpath.internal.axes.HasPositionalPredChecker;
+
 import backSQL.DB_Service;
+import javafx.scene.Group;
 import javafx.scene.control.TableView;
 
 public class Model {
@@ -46,9 +49,32 @@ public class Model {
 		this.dbService = dbService;
 	}
 	
-	public void runTestedQueryNext(TableView<Map<String,Object>> table) {
-		String query = this.homeModel.getIter().next();
-		dbService.runQuery(query, table);
+	public void runTestedQueryNext(TableView<Map<String, Object>> table) {
+		
+		if(this.homeModel.getIter().hasNext()) {
+			String query = this.homeModel.getIter().next();
+			System.out.println(query);
+			table.getColumns().clear();
+			dbService.runQuery(query, table);
+		} else {
+			return;
+		}
+		
+		
+	}
+
+
+	public void runTestedQueryPrevious(TableView<Map<String, Object>> table) {
+		if(homeModel.getIter().hasPrevious()) {
+			String query = this.homeModel.getIter().previous();
+			System.out.println(query);
+			table.getColumns().clear();
+			dbService.runQuery(query, table);
+	
+		} else {
+			return;
+		}
+				
 	}
 	
 
