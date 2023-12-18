@@ -30,14 +30,14 @@
             <HBox alignment="CENTER_LEFT" layoutX="31.0" layoutY="121.0" spacing="20.0">
                <children>
                   <Button mnemonicParsing="false" text="Select Folder" />
-                  <TextField editable="false" text="Path:\" />
+                  <TextField editable="false" text="Path:/" />
                   <Button mnemonicParsing="false" text="Run All in Folder" />
                </children>
             </HBox>
             <HBox alignment="CENTER_LEFT" layoutX="31.0" layoutY="179.0" prefHeight="31.0" prefWidth="470.0" spacing="20.0">
                <children>
                   <Button fx:id="selectFileTooCheckBTN" mnemonicParsing="false" onAction="#readFileToCheck" text="Select File" />
-                  <TextField fx:id="fileToCheckPath_TXTF" editable="false" prefHeight="31.0" prefWidth="209.0" text="Path:\" />
+                  <TextField fx:id="fileToCheckPath_TXTF" editable="false" prefHeight="31.0" prefWidth="209.0" text="Path:/" />
                   <Button fx:id="runFileButton" mnemonicParsing="false" onAction="#runAllTestedFile" prefHeight="31.0" prefWidth="126.0" text="Run All in File" />
                </children>
             </HBox>
@@ -70,7 +70,7 @@
                   <HBox alignment="CENTER_LEFT" prefHeight="31.0" prefWidth="470.0">
                      <children>
                         <Button id="browseCorrectFile" fx:id="browseCorrectBTN" mnemonicParsing="false" onAction="#browseForCorrectFile" prefHeight="31.0" prefWidth="81.0" text="Browse" />
-                        <TextField fx:id="correctPathTXT" editable="false" prefHeight="31.0" prefWidth="202.0" text="Path:\" />
+                        <TextField fx:id="correctPathTXT" editable="false" prefHeight="31.0" prefWidth="202.0" text="Path:/" />
                      </children>
                   </HBox>
                </children>

@@ -61,13 +61,12 @@ public class HomeController {
 	@FXML
 	private Button runFileButton;
 	@FXML
-	private TableView<Map<String, Object>> table;
+	private TableView<Object> table;
 	@FXML
 	private Button runNextFromFileBTN;
 	@FXML
 	private Button runPreviousFromFileBTN;
 	private UserErrors userError;
-	private Group root;
 	
 	public HomeController() {
 		userError = new UserErrors();
@@ -199,9 +198,23 @@ public class HomeController {
 	}
 	
 	public void runAllTestedFile() {
-		if(toggle.getSelectedToggle() == null)
+		if(toggle.getSelectedToggle() == null) {
 			userError.unselectedCheckMethod("Please Select mean of validation on the right pannel.");
-		else System.out.println(toggle.getSelectedToggle());
+			return;
+		} else {
+			System.out.println(toggle.getSelectedToggle());
+		}
+		if(correctPathTXT.getText().equals("Path:/")) {
+			userError.userInputError("Please Upload a Correct Results File");
+			return;
+		}
+		if(fileToCheckPath_TXTF.getText().equals("Path:/")) {
+			userError.userInputError("Please Upload a File to check");
+			return;
+		}
+		
+		model.runAllInFile(table);
+		
 		
 		
 	}

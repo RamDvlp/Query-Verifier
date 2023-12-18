@@ -13,6 +13,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -24,6 +25,8 @@ import javafx.collections.ObservableList;
 import javafx.scene.Group;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
+import model.ComperatorByColumn;
 
 public class DBconnection {
 
@@ -103,10 +106,15 @@ public class DBconnection {
 		return conn;
 	}
 		
-	
-	public void runAquery(String query, TableView<Map<String, Object>> table) {
+	/**
+	 * run a single query and put the result table to table view.
+	 * @param query
+	 * @param table
+	 */
+	public void runAquery(String query, TableView<Object> table) {
 		dissectQuery(query);
 
+		//runSelectQueryForGUI(query, table);
 		switch (querytype) {
 		case SELECT:
 			 runSelectQueryForGUI(query, table);
@@ -138,7 +146,7 @@ public class DBconnection {
 			if (query == null || query == "") {
 				query = constructdefaultQuery();
 			} else {
-				dissectQuery(query);
+				//dissectQuery(query);
 			}
 			//dissectQuery(conn, query);
 			ResultSet rs = stmt.executeQuery(query);
@@ -171,7 +179,7 @@ public class DBconnection {
 
 	}
 
-	public void runSelectQueryForGUI(String query, TableView<Map<String,Object>> table) {
+	public void runSelectQueryForGUI(String query, TableView<Object> table) {
 
 		//StringBuffer resultData = new StringBuffer();
 
@@ -191,17 +199,20 @@ public class DBconnection {
 	        for (int columnIndex = 1; columnIndex <= columnCount; columnIndex++) {
 	            String columnName = metaData.getColumnName(columnIndex);
 
-	            TableColumn<Map<String, Object>, Object> column = new TableColumn<>(columnName);
-	                column.setCellValueFactory(cellData -> {
-	                    Map<String, Object> rowData = cellData.getValue();
-	                    return new SimpleObjectProperty<>(rowData.get(columnName));
-	                });
-
-	                table.getColumns().add(column);
+	            TableColumn<Object, Object> column = new TableColumn<>(columnName);
+	            column.setCellValueFactory(cellData -> {
+	                Object value = cellData.getValue();
+	                if (value instanceof Map) {
+	                    return new SimpleObjectProperty<>(((Map<?, ?>) value).get(columnName));
+	                } else {
+	                    return new SimpleObjectProperty<>(null);
+	                }
+	            });
+	            	table.getColumns().add(column);
 	            }
 
 	            // Populate data
-	            ObservableList<Map<String, Object>> data = FXCollections.observableArrayList();
+	            ObservableList<Object> data = FXCollections.observableArrayList();
 	            while (rs.next()) {
 	                Map<String, Object> row = new HashMap<>();
 	                for (int columnIndex = 1; columnIndex <= columnCount; columnIndex++) {
@@ -343,6 +354,65 @@ public class DBconnection {
 		return newID;
 
 
+	}
+
+	public boolean compareQueryByMode(String selectedModel, String correct, String tested) {
+
+		StringBuffer resultDataCorrect = new StringBuffer();
+		int res = 0;
+		
+		try (Statement stmt = conn.createStatement()) {
+			try(ResultSet rs1 = stmt.executeQuery(correct); ResultSet rs2 = stmt.executeQuery(tested)){
+				switch (selectedModel) {
+				case "Column-Wise":
+					Comparator<ResultSet> comp = new Comparator<ResultSet>() {
+//TODO - something about the comparison.						
+						@Override
+						public int compare(ResultSet o1, ResultSet o2) {
+							int column1=0;
+							int column2=0;
+							try {
+								column1 = o1.getMetaData().getColumnCount();
+								column2 = o2.getMetaData().getColumnCount();
+							} catch (SQLException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+							return column1- column2;
+						}
+					};
+					//res = comp.compare(rs1, rs2);
+					break;
+
+				default:
+					break;
+				}
+	
+				
+			}
+			
+						
+			//getColumnsNameOfQuery(rs);
+
+			//resultData.append("\t\n");
+
+			// Retrieving data from the result set
+//			while (rs.next()) {
+//				for (String a : columns) {
+//					resultData.append(rs.getString(a) + "\t");
+//				}
+//				resultData.append("\n");
+//
+//			}
+
+			//rs1.close();
+			//rs2.close();
+
+		} catch (SQLException ex) {
+			System.out.println(ex.getMessage());
+		}
+
+		return res==0;
 	}
 
 }

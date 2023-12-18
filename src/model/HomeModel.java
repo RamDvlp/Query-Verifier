@@ -56,6 +56,22 @@ public class HomeModel {
 		System.out.println(this.selectedModel);
 	}
 	
+	public ArrayList<String> getCorrectQueries() {
+		return correctQueries;
+	}
+
+	public void setCorrectQueries(ArrayList<String> correctQueries) {
+		this.correctQueries = correctQueries;
+	}
+
+	public ArrayList<String> getTestedQueries() {
+		return testedQueries;
+	}
+
+	public void setTestedQueries(ArrayList<String> testedQueries) {
+		this.testedQueries = testedQueries;
+	}
+
 	public int uploadQueries(String clickedBTN_Text) {
 		int uploaded = 0;
 		

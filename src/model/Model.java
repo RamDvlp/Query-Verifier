@@ -1,12 +1,8 @@
 package model;
 
-import java.sql.ResultSet;
 import java.util.Map;
 
-import com.sun.org.apache.xpath.internal.axes.HasPositionalPredChecker;
-
 import backSQL.DB_Service;
-import javafx.scene.Group;
 import javafx.scene.control.TableView;
 
 public class Model {
@@ -49,7 +45,7 @@ public class Model {
 		this.dbService = dbService;
 	}
 	
-	public void runTestedQueryNext(TableView<Map<String, Object>> table) {
+	public void runTestedQueryNext(TableView<Object> table) {
 		
 		if(this.homeModel.getIter().hasNext()) {
 			String query = this.homeModel.getIter().next();
@@ -59,12 +55,10 @@ public class Model {
 		} else {
 			return;
 		}
-		
-		
+			
 	}
 
-
-	public void runTestedQueryPrevious(TableView<Map<String, Object>> table) {
+	public void runTestedQueryPrevious(TableView<Object> table) {
 		if(homeModel.getIter().hasPrevious()) {
 			String query = this.homeModel.getIter().previous();
 			System.out.println(query);
@@ -75,6 +69,12 @@ public class Model {
 			return;
 		}
 				
+	}
+
+
+	public void runAllInFile(TableView<Object> table) {
+		dbService.runComparison(table,homeModel.getSelectedModel(),homeModel.getCorrectQueries(),homeModel.getTestedQueries());
+		
 	}
 	
 
