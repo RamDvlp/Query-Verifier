@@ -2,9 +2,6 @@ package application;
 
 import java.io.File;
 import java.io.IOException;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.HashMap;
 import java.util.Map;
 
 import javafx.beans.property.SimpleObjectProperty;
@@ -15,21 +12,24 @@ import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableColumn.CellDataFeatures;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.util.Callback;
 import model.Model;
+import model.RS_Container;
 
 public class HomeController {
 	
@@ -67,6 +67,11 @@ public class HomeController {
 	@FXML
 	private Button runPreviousFromFileBTN;
 	private UserErrors userError;
+	//Since the model finish its job with the container and from now on need only present
+	//the data to use, more comfortable to keep index of containers in controller. 
+	private int containerIndex = 0;
+	private boolean direction = true;
+	
 	
 	public HomeController() {
 		userError = new UserErrors();
@@ -128,6 +133,18 @@ public class HomeController {
 		int correct = model.getHomeModel().uploadQueries(clicked.getText());
 		correctConfLABEL.setText(correct + " Queries uploaded"); 
 		correctConfLABEL.setVisible(true);
+		//runFileButton.setDisable(true); //not necessary - to fast for user to notice
+		Runnable rn = new Runnable() {
+			
+			@Override
+			public void run() {
+				model.fillContainer(clicked.getText());
+				//runFileButton.setDisable(false);
+			}
+		};
+		
+		Thread runQ = new Thread(rn);
+		runQ.run();
 		
 	}
 	
@@ -220,9 +237,37 @@ public class HomeController {
 	}
 	
 	public void runNextFromFile() {
-		model.runTestedQueryNext(table);
+		table.getColumns().clear();
+		if(containerIndex == model.getTestedContainer().size())
+			return;
+		if(!direction) {
+			containerIndex++;
+			direction = true;
+		}
+		
+		RS_Container container = model.getTestedContainer().get(containerIndex);
+		if (!container.getData().isEmpty()) {
+            Map<String, Object> firstRow = container.getData().get(0);
+
+            // Add columns using keys from the first entry in data
+            for (String columnName : firstRow.keySet()) {
+                TableColumn<Object, Object> column = new TableColumn<>(columnName);
+
+                // Set cell value factory using PropertyValueFactory
+                column.setCellValueFactory(new PropertyValueFactory<>(columnName));
+
+                table.getColumns().add(column);
+            }
+
+            // Add data to ObservableList
+            ObservableList<Object> data = FXCollections.observableArrayList();
+            data.addAll(container.getData());
+
+            // Set items to TableView
+            table.setItems(data);
+        }	
 	}
-	
+
 	public void runPreviousFromFile() {
 		model.runTestedQueryPrevious(table);
 	}

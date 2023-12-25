@@ -19,6 +19,8 @@ import javafx.scene.control.TableColumn.CellDataFeatures;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.paint.Color;
 import javafx.util.Callback;
+import model.QueryIterator;
+import model.RS_Container;
 
 public class DB_Service {
 
@@ -56,7 +58,7 @@ public class DB_Service {
 
 
 	public void runQuery(String query, TableView<Object> table) {
-		 dbConnection.runAquery(query, table);
+		 //dbConnection.runAquery(query);
 		
 	}
 
@@ -102,6 +104,16 @@ public class DB_Service {
 	    }
 
 	    table.setItems(data);
+	}
+
+
+	public void fillContainer(QueryIterator iter, ArrayList<RS_Container> testedContainer) {
+		while(iter.hasNext()) {
+			RS_Container cnt = new RS_Container();
+			testedContainer.add(cnt);
+			dbConnection.runAquery(iter.next(), cnt);
+		}
+		
 	}
 	
 	

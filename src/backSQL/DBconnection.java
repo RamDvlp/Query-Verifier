@@ -27,6 +27,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import model.ComperatorByColumn;
+import model.RS_Container;
 
 public class DBconnection {
 
@@ -109,15 +110,16 @@ public class DBconnection {
 	/**
 	 * run a single query and put the result table to table view.
 	 * @param query
-	 * @param table
+	 * @param testedContainer 
+	 * 
 	 */
-	public void runAquery(String query, TableView<Object> table) {
+	public void runAquery(String query, RS_Container testedContainer) {
 		dissectQuery(query);
 
 		//runSelectQueryForGUI(query, table);
 		switch (querytype) {
 		case SELECT:
-			 runSelectQueryForGUI(query, table);
+			 runSelectQueryForContainer(query, testedContainer);
 		case INSERT:
 
 			break;
@@ -179,40 +181,22 @@ public class DBconnection {
 
 	}
 
-	public void runSelectQueryForGUI(String query, TableView<Object> table) {
+	public void runSelectQueryForContainer(String query, RS_Container testedContainer) {
 
 		//StringBuffer resultData = new StringBuffer();
 
 		try (Statement stmt = conn.createStatement()) {
 
-			if (query == null || query == "") {
-				query = constructdefaultQuery();
-			} else {
-				dissectQuery(query);
-			}
 			//dissectQuery(conn, query);
 			ResultSet rs =  stmt.executeQuery(query);
 			
 			ResultSetMetaData metaData = rs.getMetaData();
 	        int columnCount = metaData.getColumnCount();
+	        testedContainer.setNumCols(columnCount);
 
-	        for (int columnIndex = 1; columnIndex <= columnCount; columnIndex++) {
-	            String columnName = metaData.getColumnName(columnIndex);
-
-	            TableColumn<Object, Object> column = new TableColumn<>(columnName);
-	            column.setCellValueFactory(cellData -> {
-	                Object value = cellData.getValue();
-	                if (value instanceof Map) {
-	                    return new SimpleObjectProperty<>(((Map<?, ?>) value).get(columnName));
-	                } else {
-	                    return new SimpleObjectProperty<>(null);
-	                }
-	            });
-	            	table.getColumns().add(column);
-	            }
 
 	            // Populate data
-	            ObservableList<Object> data = FXCollections.observableArrayList();
+	            //ObservableList<Object> data = FXCollections.observableArrayList();
 	            while (rs.next()) {
 	                Map<String, Object> row = new HashMap<>();
 	                for (int columnIndex = 1; columnIndex <= columnCount; columnIndex++) {
@@ -220,12 +204,9 @@ public class DBconnection {
 	                    Object value = rs.getObject(columnIndex);
 	                    row.put(columnName, value);
 	                }
-	                data.add(row);
+	                testedContainer.getData().add(row);             
+	                
 	            }
-
-	        table.setItems(data);
-			
-			
 			
 			rs.close();
 
@@ -366,7 +347,7 @@ public class DBconnection {
 				switch (selectedModel) {
 				case "Column-Wise":
 					Comparator<ResultSet> comp = new Comparator<ResultSet>() {
-//TODO - something about the comparison.						
+					
 						@Override
 						public int compare(ResultSet o1, ResultSet o2) {
 							int column1=0;
@@ -413,6 +394,11 @@ public class DBconnection {
 		}
 
 		return res==0;
+	}
+
+	public void fillContainer(String next, RS_Container testedContainer) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
