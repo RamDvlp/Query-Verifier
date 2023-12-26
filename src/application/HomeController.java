@@ -1,12 +1,16 @@
 package application;
 
+import java.awt.Font;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import javax.swing.text.StyledEditorKit.BoldAction;
+
 import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -28,6 +32,7 @@ import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
+import javafx.scene.text.TextAlignment;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -294,41 +299,43 @@ public class HomeController {
 		table.getColumns().clear();
 
 
-                TableColumn<Object, Object> column = new TableColumn<>("Result");
-                column.setCellValueFactory(cellData -> new SimpleObjectProperty<>(new Label(cellData.getValue().toString())));
-                column.setCellFactory(tc -> new TableCell<Object, Object>() {
-                    @Override
-                    protected void updateItem(Object item, boolean empty) {
-                        super.updateItem(item, empty);
+		TableColumn<Object, String> column = new TableColumn<>("Result");
+		column.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().toString()));
+		column.setCellFactory(tc -> new TableCell<Object, String>() {
+		    @Override
+		    protected void updateItem(String item, boolean empty) {
+		        super.updateItem(item, empty);
 
-                        if (item == null || empty) {
-                            setGraphic(null);
-                        } else {
-                            setGraphic((Label) item);
-                        }
-                    }
-                });
+		        if (item == null || empty) {
+		            setGraphic(null);
+		        } else {
+		            Label label = new Label(item);
+		            label.setStyle("-fx-font-weight: bold;");
+		            if (item.equals("Correct")) {
+		                label.setTextFill(Color.GREEN);
+		            } else {
+		                label.setTextFill(Color.RED);
+		            }
+		            setGraphic(label);
+		        }
+		    }
+		});
 
-                table.getColumns().add(column);
+		table.getColumns().add(column);
 
-                // Add data to ObservableList
-                ObservableList<Object> data = FXCollections.observableArrayList();
-                //data.addAll();
+		// Add data to ObservableList
+		ObservableList<Object> data = FXCollections.observableArrayList();
 
-                for(int i = 0; i< answers.length; i ++) {
-                	Label lb = new Label();
-                	if(answers[i]) {
-                		lb.setText("Correct");
-                		lb.setTextFill(Color.GREEN);
-                	} else {
-                		lb.setText("Incorrect");
-                		lb.setTextFill(Color.RED);
-                	}
-                	data.add(lb);
-                }
-                // Set items to TableView
-                table.setItems(data);            
-        
+		for (int i = 0; i < answers.length; i++) {
+		    if (answers[i]) {
+		        data.add("Correct");
+		    } else {
+		        data.add("Incorrect");
+		    }
+		}
+
+		// Set items to TableView
+		table.setItems(data);        
 		
 	}
 

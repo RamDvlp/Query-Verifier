@@ -95,4 +95,4 @@ order by avg(length) desc;
 
 #\! echo Why does this query return the empty set?
 
-select * from film natural join inventory;
+select * from film;
