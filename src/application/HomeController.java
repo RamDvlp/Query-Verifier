@@ -2,6 +2,8 @@ package application;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import javafx.beans.property.SimpleObjectProperty;
@@ -17,6 +19,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableColumn.CellDataFeatures;
 import javafx.scene.control.TableView;
@@ -24,6 +27,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -67,15 +71,10 @@ public class HomeController {
 	@FXML
 	private Button runPreviousFromFileBTN;
 	private UserErrors userError;
-	//Since the model finish its job with the container and from now on need only present
-	//the data to use, more comfortable to keep index of containers in controller. 
-	private int containerIndex = 0;
-	private boolean direction = true;
 	
 	
 	public HomeController() {
 		userError = new UserErrors();
-		//root = new Group(table);
 	}
 	
 	
@@ -107,7 +106,7 @@ public class HomeController {
             System.out.println("File selection cancelled.");
         }
         
-        uploadeCorrectFile(event);
+        uploadeFile(event);
 	}
 	
 	public void setCheckMode() {
@@ -126,7 +125,7 @@ public class HomeController {
 
 	}
 	
-	private void uploadeCorrectFile(Event event) {
+	private void uploadeFile(Event event) {
 		//System.out.println("pressed upload");
 		Button clicked = (Button)((Node)event.getSource());
 		
@@ -210,7 +209,9 @@ public class HomeController {
             System.out.println("File selection cancelled.");
         }
         
-        uploadeCorrectFile(event);
+        uploadeFile(event);
+        runNextFromFileBTN.setDisable(false);
+        runPreviousFromFileBTN.setDisable(false);
 		
 	}
 	
@@ -230,22 +231,30 @@ public class HomeController {
 			return;
 		}
 		
-		model.runAllInFile(table);
+		boolean[] answers =  model.runAllInFile();
+		populateTable(answers);
 		
 		
 		
 	}
-	
+
+
+
 	public void runNextFromFile() {
+		if(model.getContainerIter().hasNext())
+			populateTable(model.getContainerIter().next());
+	}
+	
+
+	public void runPreviousFromFile() {
+		if(model.getContainerIter().hasPrevious())
+			populateTable(model.getContainerIter().previous());
+	}
+
+
+	private void populateTable(RS_Container container) {
 		table.getColumns().clear();
-		if(containerIndex == model.getTestedContainer().size())
-			return;
-		if(!direction) {
-			containerIndex++;
-			direction = true;
-		}
-		
-		RS_Container container = model.getTestedContainer().get(containerIndex);
+
 		if (!container.getData().isEmpty()) {
             Map<String, Object> firstRow = container.getData().get(0);
 
@@ -254,22 +263,76 @@ public class HomeController {
                 TableColumn<Object, Object> column = new TableColumn<>(columnName);
 
                 // Set cell value factory using PropertyValueFactory
-                column.setCellValueFactory(new PropertyValueFactory<>(columnName));
+                column.setCellValueFactory(cellData -> new SimpleObjectProperty<>(((Map<String,Object>) cellData.getValue()).get(columnName)));
+                column.setCellFactory(tc -> new TableCell<Object, Object>() {
+                    @Override
+                    protected void updateItem(Object item, boolean empty) {
+                        super.updateItem(item, empty);
 
+                        if (item == null || empty) {
+                            setText(null);
+                        } else {
+                            setText(item.toString());
+                        }
+                    }
+                });  
                 table.getColumns().add(column);
             }
-
+            
             // Add data to ObservableList
             ObservableList<Object> data = FXCollections.observableArrayList();
             data.addAll(container.getData());
-
+            
             // Set items to TableView
             table.setItems(data);
-        }	
+        }
+		//table.refresh();
+	}
+	
+	
+	private void populateTable(boolean[] answers) {
+		table.getColumns().clear();
+
+
+                TableColumn<Object, Object> column = new TableColumn<>("Result");
+                column.setCellValueFactory(cellData -> new SimpleObjectProperty<>(new Label(cellData.getValue().toString())));
+                column.setCellFactory(tc -> new TableCell<Object, Object>() {
+                    @Override
+                    protected void updateItem(Object item, boolean empty) {
+                        super.updateItem(item, empty);
+
+                        if (item == null || empty) {
+                            setGraphic(null);
+                        } else {
+                            setGraphic((Label) item);
+                        }
+                    }
+                });
+
+                table.getColumns().add(column);
+
+                // Add data to ObservableList
+                ObservableList<Object> data = FXCollections.observableArrayList();
+                //data.addAll();
+
+                for(int i = 0; i< answers.length; i ++) {
+                	Label lb = new Label();
+                	if(answers[i]) {
+                		lb.setText("Correct");
+                		lb.setTextFill(Color.GREEN);
+                	} else {
+                		lb.setText("Incorrect");
+                		lb.setTextFill(Color.RED);
+                	}
+                	data.add(lb);
+                }
+                // Set items to TableView
+                table.setItems(data);            
+        
+		
 	}
 
-	public void runPreviousFromFile() {
-		model.runTestedQueryPrevious(table);
-	}
+
+
 	
 }

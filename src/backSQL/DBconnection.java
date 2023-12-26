@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
@@ -194,11 +195,8 @@ public class DBconnection {
 	        int columnCount = metaData.getColumnCount();
 	        testedContainer.setNumCols(columnCount);
 
-
-	            // Populate data
-	            //ObservableList<Object> data = FXCollections.observableArrayList();
-	            while (rs.next()) {
-	                Map<String, Object> row = new HashMap<>();
+	        	while (rs.next()) {
+	                Map<String, Object> row = new LinkedHashMap<>();
 	                for (int columnIndex = 1; columnIndex <= columnCount; columnIndex++) {
 	                    String columnName = metaData.getColumnName(columnIndex);
 	                    Object value = rs.getObject(columnIndex);
@@ -207,6 +205,7 @@ public class DBconnection {
 	                testedContainer.getData().add(row);             
 	                
 	            }
+	            testedContainer.setNumRows(testedContainer.getData().size());
 			
 			rs.close();
 

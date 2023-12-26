@@ -1,6 +1,7 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Map;
 
 import backSQL.DB_Service;
@@ -13,6 +14,7 @@ public class Model {
 	private DB_Service dbService;
 	private ArrayList<RS_Container> testedContainer;
 	private ArrayList<RS_Container> correctContainer;
+	private ContainerIterator containerIter;
 	
 	
 	public Model() {
@@ -22,9 +24,18 @@ public class Model {
 		this.dbService = new DB_Service();
 		this.correctContainer = new ArrayList<RS_Container>();
 		this.testedContainer = new ArrayList<RS_Container>();
+		this.containerIter = new ContainerIterator(testedContainer);
 	}
 	
 	
+	public ContainerIterator getContainerIter() {
+		return containerIter;
+	}
+
+	public void setContainerIter(ContainerIterator containerIter) {
+		this.containerIter = containerIter;
+	}
+
 	public DBLogInModel getLogInModel() {
 		return logInModel;
 	}
@@ -92,21 +103,50 @@ public class Model {
 	}
 
 
-	public void runAllInFile(TableView<Object> table) {
-		dbService.runComparison(table,homeModel.getSelectedModel(),homeModel.getCorrectQueries(),homeModel.getTestedQueries());
+	public boolean[] runAllInFile() {
+		int index = 0;
+		boolean [] ans = new boolean [correctContainer.size()];
+		Comparator<RS_Container> comp = null;
+		switch (homeModel.getSelectedModel()) {
+		case "Column-Wise":
+			comp = new ComperatorByColumn();
+			break;
+
+		case "Row-Wise":
+			
+			break;
+
+		case "Cell-Wise":
+	
+			break;
+
+		default:
+			break;
+		}
 		
+		ContainerIterator correctIter = new ContainerIterator(correctContainer);
+		while(correctIter.hasNext()) {
+			ans[index] = comp.compare(correctIter.next(), containerIter.next())!=0 ?  false : true;
+			index++;
+			
+		}
+		
+		return ans;
+	
 	}
 
 
 	public void fillContainer(String mode) {
 		if(mode.equals("Select File")) {
+			testedContainer.clear();
 			homeModel.setIter(new QueryIterator(homeModel.getTestedQueries()));
 			dbService.fillContainer(this.homeModel.getIter(),this.testedContainer);
-			System.out.println(testedContainer.get(testedContainer.size()-1).toString());
+			
 		} else {
+			correctContainer.clear();
 			homeModel.setIter(new QueryIterator(homeModel.getCorrectQueries()));
 			dbService.fillContainer(this.homeModel.getIter(),this.correctContainer);
-			System.out.println(correctContainer.get(correctContainer.size()-1));
+			
 		}
 		
 		

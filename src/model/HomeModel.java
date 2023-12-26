@@ -80,8 +80,10 @@ public class HomeModel {
 		File fileToUpload = buttonTextToFileFillter(clickedBTN_Text);
 		ArrayList<String> tempWrite = new ArrayList<String>();
 		if(fileToUpload.equals(this.fileCorrectQuery)) {
+			correctQueries.clear();
 			tempWrite = this.correctQueries;
 		} if(fileToUpload.equals(this.fileToCheck)) {
+			testedQueries.clear();
 			tempWrite = this.testedQueries;
 		}
 		
