@@ -113,11 +113,11 @@ public class Model {
 			break;
 
 		case "Row-Wise":
-			
+			comp = new ComperatorByRow();
 			break;
 
 		case "Cell-Wise":
-	
+			comp = new ComperatorByCell();
 			break;
 
 		default:
@@ -125,6 +125,7 @@ public class Model {
 		}
 		
 		ContainerIterator correctIter = new ContainerIterator(correctContainer);
+		setContainerIter(new ContainerIterator(testedContainer));
 		while(correctIter.hasNext()) {
 			ans[index] = comp.compare(correctIter.next(), containerIter.next())!=0 ?  false : true;
 			index++;
