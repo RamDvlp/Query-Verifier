@@ -104,11 +104,12 @@ public class HomeController {
         model.getHomeModel().setSelectedCorrectFile( fileChooser.showOpenDialog(null));
 
         if (model.getHomeModel().getSelectedCorrectFile() != null) {
-            System.out.println("Selected File: " + model.getHomeModel().getSelectedCorrectFile().getAbsolutePath());
+            //System.out.println("Selected File: " + model.getHomeModel().getSelectedCorrectFile().getAbsolutePath());
             // You can perform further actions with the selected file
             correctPathTXT.setText(model.getHomeModel().getSelectedCorrectFile().getAbsolutePath());
         } else {
-            System.out.println("File selection cancelled.");
+            //System.out.println("File selection cancelled.");
+            return;
         }
         
         uploadeFile(event);
@@ -207,11 +208,12 @@ public class HomeController {
         model.getHomeModel().setFileToCheck(fileChooser.showOpenDialog(null));
 
         if (model.getHomeModel().getFileToCheck() != null) {
-            System.out.println("Selected File: " + model.getHomeModel().getFileToCheck().getAbsolutePath());
+            //System.out.println("Selected File: " + model.getHomeModel().getFileToCheck().getAbsolutePath());
             // You can perform further actions with the selected file
             fileToCheckPath_TXTF.setText(model.getHomeModel().getFileToCheck().getAbsolutePath());
         } else {
-            System.out.println("File selection cancelled.");
+            //System.out.println("File selection cancelled.");
+            return;
         }
         
         uploadeFile(event);
