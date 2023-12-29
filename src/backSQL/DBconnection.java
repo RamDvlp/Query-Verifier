@@ -36,7 +36,7 @@ public class DBconnection {
 
 	private static String[] queryParts;
 	
-	public static enum qType { SELECT, UPDATE, INSERT};
+	public static enum qType { SELECT, UPDATE, INSERT,DELETE};
 
 	public static final String propfileName = "db.properties";
 	
@@ -117,18 +117,37 @@ public class DBconnection {
 	public void runAquery(String query, RS_Container testedContainer) {
 		dissectQuery(query);
 
-		//runSelectQueryForGUI(query, table);
 		switch (querytype) {
 		case SELECT:
-			 runSelectQueryForContainer(query, testedContainer);
-		case INSERT:
-
+			runSelectQueryForContainer(query, testedContainer);
 			break;
-
+		case INSERT:
+			//runInsertAndUpdateQueryForContainer(query,testedContainer);
+			//break;
+		case DELETE:	
 		case UPDATE:
+			runInsertAndUpdateQueryForContainer(query,testedContainer);
 			break;
 		default:
+			//if all else fails, try run as default - will (should) work for ALTER, INDEX, VIEW, "if not".
+			//NOT been tested for the mentioned queries - 30.12; v.01
+			runInsertAndUpdateQueryForContainer(query, testedContainer);
 			break;
+		}
+		
+	}
+
+	private void runInsertAndUpdateQueryForContainer(String query, RS_Container testedContainer) {
+		
+		try(Statement stm = conn.createStatement()){
+			int numRowsEffected = stm.executeUpdate(query);
+			Map<String, Object> mp = new HashMap<String,Object>();
+			mp.put("Num' Rows Effected", numRowsEffected);
+			testedContainer.getData().add(mp);
+			
+		} catch (SQLException e) {
+			
+			e.printStackTrace();
 		}
 		
 	}
@@ -239,11 +258,16 @@ public class DBconnection {
 			if (s.toUpperCase().equals("SELECT")) {
 				querytype = qType.SELECT;
 				
-			} else if( s.toUpperCase().equals("INSERT")) {
+			} 
+			if( s.toUpperCase().equals("INSERT")) {
 				querytype = qType.INSERT;
 				//return runInsertQuery(query);
-			} else {
+			} 
+			if(s.toUpperCase().equals("UPDATE")){
 				querytype = qType.UPDATE;
+			}
+			if(s.toUpperCase().equals("DELETE")){
+				querytype = qType.DELETE;
 			}
 			return;
 		}
@@ -298,7 +322,7 @@ public class DBconnection {
 		return lineModified;
 	}
 
-	public int runInsertQuery(String string) {
+	public int runInsertQuery(String string, RS_Container testedContainer) {
 		String sql = "INSERT INTO candidates(first_name,last_name,dob,phone,email) "
 	            + "VALUES(?,?,?,?,?)";
 		
@@ -371,22 +395,7 @@ public class DBconnection {
 				
 			}
 			
-						
-			//getColumnsNameOfQuery(rs);
 
-			//resultData.append("\t\n");
-
-			// Retrieving data from the result set
-//			while (rs.next()) {
-//				for (String a : columns) {
-//					resultData.append(rs.getString(a) + "\t");
-//				}
-//				resultData.append("\n");
-//
-//			}
-
-			//rs1.close();
-			//rs2.close();
 
 		} catch (SQLException ex) {
 			System.out.println(ex.getMessage());
@@ -395,9 +404,9 @@ public class DBconnection {
 		return res==0;
 	}
 
-	public void fillContainer(String next, RS_Container testedContainer) {
-		// TODO Auto-generated method stub
-		
-	}
+//	public void fillContainer(String next, RS_Container testedContainer) {
+//		// TODO Auto-generated method stub
+//		
+//	}
 
 }

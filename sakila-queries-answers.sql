@@ -50,8 +50,8 @@ where film.title = 'Academy Dinosaur'
 
 #\! echo Insert a record to represent Mary Smith renting 'Academy Dinosaur' from Mike Hillyer at Store 1 today .
 
-insert into rental (rental_date, inventory_id, customer_id, staff_id)
-values (NOW(), 1, 1, 1);
+#insert into rental (rental_date, inventory_id, customer_id, staff_id)
+#values (NOW(), 1, 1, 1);
 
 #\! echo When is 'Academy Dinosaur' due?
 
@@ -94,3 +94,13 @@ order by avg(length) desc;
 #\! echo Why does this query return the empty set?
 
 select * from film natural join inventory;
+
+#
+UPDATE film
+SET rental_rate = rental_rate * 1.1
+WHERE release_year = 2006;
+
+#
+UPDATE film
+SET rental_rate = rental_rate / 1.1
+WHERE release_year = 2006;
