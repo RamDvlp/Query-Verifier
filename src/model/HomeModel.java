@@ -14,6 +14,8 @@ public class HomeModel {
 	private ArrayList<String> testedQueries;
 	private File fileToCheck;
 	private QueryIterator iter;
+	private File rootFolder;
+	private ArrayList<String> folderQueries;
 	
 	public HomeModel() {
 		super();
@@ -25,6 +27,22 @@ public class HomeModel {
 	
 	
 	
+	public File getRootFolder() {
+		return rootFolder;
+	}
+
+	public void setRootFolder(File rootFolder) {
+		this.rootFolder = rootFolder;
+	}
+
+	public ArrayList<String> getFolderQueries() {
+		return folderQueries;
+	}
+
+	public void setFolderQueries(ArrayList<String> folderQueries) {
+		this.folderQueries = folderQueries;
+	}
+
 	public QueryIterator getIter() {
 		return iter;
 	}

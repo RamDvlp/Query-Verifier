@@ -29,9 +29,9 @@
                </font></Label>
             <HBox alignment="CENTER_LEFT" layoutX="31.0" layoutY="121.0" spacing="20.0">
                <children>
-                  <Button mnemonicParsing="false" text="Select Folder" />
-                  <TextField editable="false" text="Path:/" />
-                  <Button mnemonicParsing="false" text="Run All in Folder" />
+                  <Button fx:id="selectFolderBTN" mnemonicParsing="false" onAction="#browseForFolder" text="Select Folder" />
+                  <TextField fx:id="folderPath" editable="false" text="Path:/" />
+                  <Button fx:id="runFolderBTN" mnemonicParsing="false" text="Run All in Folder" />
                </children>
             </HBox>
             <HBox alignment="CENTER_LEFT" layoutX="31.0" layoutY="179.0" prefHeight="31.0" prefWidth="470.0" spacing="20.0">
@@ -83,8 +83,8 @@
                   <Font name="System Bold" size="16.0" />
                </font>
             </Label>
-            <Button disable="true" layoutX="550.0" layoutY="121.0" mnemonicParsing="false" text="Run Next" />
-            <Button disable="true" layoutX="632.0" layoutY="121.0" mnemonicParsing="false" text="Run Previous" />
+            <Button fx:id="runNextFolderBTN" disable="true" layoutX="550.0" layoutY="121.0" mnemonicParsing="false" text="Run Next" />
+            <Button fx:id="runPreviosInFolderBTN" disable="true" layoutX="632.0" layoutY="121.0" mnemonicParsing="false" text="Run Previous" />
             <Button fx:id="runNextFromFileBTN" disable="true" layoutX="550.0" layoutY="179.0" mnemonicParsing="false" onAction="#runNextFromFile" text="Run Next" />
             <Button fx:id="runPreviousFromFileBTN" disable="true" layoutX="632.0" layoutY="179.0" mnemonicParsing="false" onAction="#runPreviousFromFile" text="Run Previous" />
             <Button fx:id="reconnect_BTN" layoutX="997.0" layoutY="679.0" mnemonicParsing="false" onAction="#openLogInScreen" text="Reconnect" />

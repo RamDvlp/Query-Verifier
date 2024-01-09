@@ -1,17 +1,11 @@
 package application;
 
-import java.awt.Font;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
-
-import javax.swing.text.StyledEditorKit.BoldAction;
 
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -25,24 +19,22 @@ import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableColumn.CellDataFeatures;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
-import javafx.scene.text.TextAlignment;
+import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.util.Callback;
 import model.Model;
 import model.RS_Container;
 
 public class HomeController {
 	
 	private Model model;
+	private UserErrors userError;
 	@FXML
 	private Label midLabel;
 	@FXML
@@ -51,10 +43,8 @@ public class HomeController {
 	private RadioButton rowWise;
 	@FXML
 	private RadioButton cellWise;
-	
 	@FXML
 	private ToggleGroup toggle;
-
 	@FXML
 	private Button browseCorrectBTN;
 	@FXML
@@ -75,7 +65,17 @@ public class HomeController {
 	private Button runNextFromFileBTN;
 	@FXML
 	private Button runPreviousFromFileBTN;
-	private UserErrors userError;
+	@FXML
+	private Button selectFolderBTN;
+	@FXML
+	private Button runFolderBTN;
+	@FXML
+	private Button runNextFolderBTN;
+	@FXML
+	private Button runPreviosInFolderBTN;
+	@FXML
+	private TextField folderPath;
+	
 	
 	
 	public HomeController() {
@@ -341,7 +341,30 @@ public class HomeController {
 		
 	}
 
+/*
+ * Folder part
+ */
+	
+	public void browseForFolder(Event event) {
+		DirectoryChooser directoryChooser = new DirectoryChooser();
+        directoryChooser.setTitle("Choose the folder to unzip files");
+        directoryChooser.setInitialDirectory(new File("./"));
+        
+        // Show the file chooser dialog and get the selected file
+        model.getHomeModel().setRootFolder(directoryChooser.showDialog(null));
 
+        if (model.getHomeModel().getRootFolder() != null) {
+            System.out.println("Selected File: " + model.getHomeModel().getRootFolder().getAbsolutePath());
+            // You can perform further actions with the selected file
+            folderPath.setText(model.getHomeModel().getRootFolder().getAbsolutePath());
+        } else {
+            System.out.println("Folder selection cancelled.");
+            return;
+        }
+        
+        //uploadeFile(event);
+	}
 
+	
 	
 }
