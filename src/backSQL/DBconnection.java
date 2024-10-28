@@ -122,6 +122,7 @@ public class DBconnection {
 			runSelectQueryForContainer(query, testedContainer);
 			break;
 		case INSERT:
+			// TODO: whats wrong with insert? same methode with update? need a new one?
 			//runInsertAndUpdateQueryForContainer(query,testedContainer);
 			//break;
 		case DELETE:	
@@ -379,7 +380,7 @@ public class DBconnection {
 								column1 = o1.getMetaData().getColumnCount();
 								column2 = o2.getMetaData().getColumnCount();
 							} catch (SQLException e) {
-								// TODO Auto-generated catch block
+								
 								e.printStackTrace();
 							}
 							return column1- column2;

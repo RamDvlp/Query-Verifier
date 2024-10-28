@@ -25,7 +25,7 @@ public class Main extends Application {
 			scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 			primaryStage.setScene(scene);
 			primaryStage.setResizable(false);
-			primaryStage.setTitle("Query-Verefier");
+			primaryStage.setTitle("Query-Verifier");
 			
 			//MVC model assignment 
 			HomeController homeController = mainloader.getController();
@@ -34,14 +34,14 @@ public class Main extends Application {
 			primaryStage.show();		
 			
 			//Init loginScreen
-			showLogInScrenn(model,primaryStage);
+			showLogInScreen(model,primaryStage);
 			
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
 	}
 
-	private void showLogInScrenn(Model model, Stage primaryStage) throws IOException {
+	private void showLogInScreen(Model model, Stage primaryStage) throws IOException {
 		//Log In to DB screen - the main App window will be disable until login committed.
 		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("DB_Selection_and_Login.fxml"));
 		AnchorPane loginPane = fxmlLoader.load(); 

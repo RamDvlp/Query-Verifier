@@ -248,6 +248,7 @@ public class HomeController {
 
 
 	public void runNextFromFile() {
+		// TODO - run next doesnt work after runall - iterator at the end - make iter circular.
 		if(model.getContainerIter().hasNext())
 			populateTable(model.getContainerIter().next());
 	}

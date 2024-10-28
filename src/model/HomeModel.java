@@ -154,19 +154,18 @@ public class HomeModel {
                 }
             }
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} 
 //		for(int i = 0; i<tempWrite.size(); i++) {
 //			System.out.println(tempWrite.get(i));
 //		}
-		System.out.println("\n\n\n");
+		System.out.println("\n\n correct queries \n\n");
 		for(int i = 0; i<correctQueries.size(); i++) {
 			
 			System.out.println(correctQueries.get(i));
 			
 		}
-		System.out.println("\n\n\n");
+		System.out.println("\n\n tested queries \n\n");
 		for(int i = 0; i<testedQueries.size(); i++) {
 			
 			System.out.println(testedQueries.get(i));

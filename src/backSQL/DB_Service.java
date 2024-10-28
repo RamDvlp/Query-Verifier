@@ -49,7 +49,6 @@ public class DB_Service {
 		try {
 			dbConnection.getConnection();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		

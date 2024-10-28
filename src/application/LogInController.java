@@ -74,7 +74,7 @@ public class LogInController {
 		if(!logInModel.getDbService().testConnection(URL_TXTF.getText(),UserTXTF.getText(),password_TXT_fld.getText())) {
 			userErrors.invalidInputError("Connection to DataBase failed.\n"
 					+ "Please Validate the URL, User and password.\n"
-					+ "Also, make sure that the Database server is online.");
+					+ "Also, make sure that the Database server is configured properly.");
 		    return;
 		}
 		

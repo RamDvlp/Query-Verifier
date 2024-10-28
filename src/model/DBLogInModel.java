@@ -51,7 +51,6 @@ public class DBLogInModel {
 		
 	}
 
-	//TODO - Comparison, if new values equal to old. if yes, skip file operations.
 	private void setPassword(String password2) {
 		this.password = password2;
 		
