@@ -50,7 +50,7 @@ public class ContainerIterator implements Iterator<RS_Container>{
 		//
 		
 		RS_Container cnt = containers.get(index);
-		System.out.println(index);
+		//System.out.println(index);
 		index++;
 		
 		return cnt;
@@ -68,7 +68,7 @@ public class ContainerIterator implements Iterator<RS_Container>{
 		if(index <0)
 			index = containers.size() - Math.abs(index);
 		RS_Container cnt =  containers.get(index);
-		System.out.println(index);
+		//System.out.println(index);
 		index--;
 		
 		return cnt;
