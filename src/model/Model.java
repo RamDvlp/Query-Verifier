@@ -126,12 +126,12 @@ public class Model {
 		
 		ContainerIterator correctIter = new ContainerIterator(correctContainer);
 		setContainerIter(new ContainerIterator(testedContainer));
-		while(correctIter.hasNext()) {
+		while(correctIter.hasNext() && index<correctContainer.size()) {
 			ans[index] = comp.compare(correctIter.next(), containerIter.next())!=0 ?  false : true;
 			index++;
 			
 		}
-		
+		index = 0;
 		return ans;
 	
 	}
