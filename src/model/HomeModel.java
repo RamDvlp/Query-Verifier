@@ -14,14 +14,18 @@ public class HomeModel {
 	private ArrayList<String> testedQueries;
 	private File fileToCheck;
 	private QueryIterator iter;
+	
 	private File rootFolder;
 	private ArrayList<String> folderQueries;
+	
+	private FolderStruct folderStruct;
 	
 	public HomeModel() {
 		super();
 		correctQueries = new ArrayList<String>();
 		testedQueries = new ArrayList<String>();
 		iter = new QueryIterator(testedQueries);
+		folderStruct = new FolderStruct();
 		
 	}
 	
@@ -89,6 +93,20 @@ public class HomeModel {
 	public void setTestedQueries(ArrayList<String> testedQueries) {
 		this.testedQueries = testedQueries;
 	}
+	
+	
+
+	public FolderStruct getFolderStruct() {
+		return folderStruct;
+	}
+
+
+
+	public void setFolderStruct(FolderStruct folderStruct) {
+		this.folderStruct = folderStruct;
+	}
+
+
 
 	public int uploadQueries(String clickedBTN_Text) {
 		int uploaded = 0;
